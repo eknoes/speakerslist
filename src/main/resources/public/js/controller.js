@@ -122,6 +122,7 @@ function addSpeaker() {
         $("#new-speaker-input")[0].value = "";
         updateList(updatedList);
     }).fail(printError);
+    return false;
 }
 
 function removeSpeakerSelf(obj) {
@@ -131,5 +132,4 @@ function removeSpeakerSelf(obj) {
     $.ajax(API_URL + "/list/" + LIST_ID + "/removeSpeaker?uid=" + encodeURIComponent(sUID)).done(function(updatedList) {
         updateList(updatedList);
     }).fail(printError);
-    return false;
 }
