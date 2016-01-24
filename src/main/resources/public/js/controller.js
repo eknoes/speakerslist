@@ -42,8 +42,8 @@ function switchToSex(obj) {
         if(newSex == "male" || newSex == "female" || newSex == "mixed") {
             var speaker = obj.parents(".speaker");
             var sUID = speaker.attr("id").substr(8, speaker.attr("id").length);
+            changeSpeakerSex(obj.parents(".speaker"), newSex);
             $.ajax(API_URL + "/lists/" + LIST_ID + "/changeSpeaker?uid=" + encodeURIComponent(sUID) + "&gender=" + newSex).done(function(updatedList) {
-                changeSpeakerSex(obj.parents(".speaker"), newSex);
                 updatedList(updatedList);
             }).fail(printError);
 
