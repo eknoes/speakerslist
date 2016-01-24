@@ -103,6 +103,9 @@ $(document).ready(function() {
     if(LIST_ID === undefined) {
         $.ajax(API_URL + "/newList").done(function(newList) {
             LIST_ID = newList.id;
+            var link = "https://speakerslist.herokuapp.com/" + LIST_ID;
+            $("#list-link").attr("href", link);
+            $("#list-link").text(link);
             initializeList();
         }).fail(printError);
     } else {
@@ -128,4 +131,5 @@ function removeSpeakerSelf(obj) {
     $.ajax(API_URL + "/list/" + LIST_ID + "/removeSpeaker?uid=" + encodeURIComponent(sUID)).done(function(updatedList) {
         updateList(updatedList);
     }).fail(printError);
+    return false;
 }

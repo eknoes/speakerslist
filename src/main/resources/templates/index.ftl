@@ -33,9 +33,14 @@
                         </div>
                     </fieldset>
                 </div>
-
+                <div class="row">
+                <#if listID??>
+                    <p>Diese Redeliste ist über den folgenden Link zu erreichen:<br /> <a href="http://speakerslist.herokuapp.com/${listID}" id="list-link">http://speakerslist.herokuapp.com/${listID}</a></p>
+                <#else>
+                    <p>Diese Redeliste ist über den folgenden Link zu erreichen:<br /> <a href="#" id="list-link"></a></p>
+                </#if>
+                </div>
             </section>
-
         </main>
 
         <script src="https://cdn.jsdelivr.net/jquery/3.0.0-beta1/jquery.min.js"></script>
