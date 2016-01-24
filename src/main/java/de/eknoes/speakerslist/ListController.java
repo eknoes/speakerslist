@@ -58,7 +58,7 @@ public class ListController {
                 if(lists.get(id) != null) {
                     SpeakerList l = lists.get(id);
                     if(request.queryParams("uid") != null) {
-                        if(addSpeaker(l, request.queryParams("uid"))) {
+                        if(l.addSpeaker(request.queryParams("uid"))) {
                             return l;
                         } else {
                             response.status(400);
@@ -77,7 +77,7 @@ public class ListController {
                             s = new Speaker(request.queryParams("name"), gId.getGender(request.queryParams("name")));
                         }
 
-                        if(addSpeaker(l, s)) {
+                        if(l.addSpeaker(s)) {
                             return l;
                         } else {
                             response.status(400);
@@ -86,6 +86,31 @@ public class ListController {
                     } else {
                         response.status(400);
                         return new APIError(400, "You have to specify an id or name");
+                    }
+                } else {
+                    response.status(400);
+                    return new APIError(404, "No list with id " + id);
+                }
+            }
+
+            response.status(400);
+            return new APIError(400, "No list id given");
+
+        }, JsonUtil.json());
+
+        /* Removing a Speaker */
+        get(PREFIX + "/list/:id/removeSpeaker", (request, response) -> {
+            response.type("application/json");
+            String id = request.params(":id");
+            if(id != null) {
+                if(lists.get(id) != null) {
+                    SpeakerList l = lists.get(id);
+                    if(request.queryParams("uid") != null) {
+                        l.removeSpeaker(request.queryParams("uid"));
+                        return l;
+                    } else {
+                        response.status(400);
+                        return new APIError(400, "You have to specify an id");
                     }
                 } else {
                     response.status(400);
@@ -159,24 +184,4 @@ public class ListController {
         }, JsonUtil.json());
     }
 
-    public boolean addSpeaker(SpeakerList list, String uid) {
-        for(Speaker s : list.getKnownSpeakers()) {
-            if(s.getUid().equals(uid)) {
-                return addSpeaker(list, s);
-            }
-        }
-        return false;
-    }
-
-    public boolean addSpeaker(SpeakerList list, Speaker speaker) {
-        if(list.getSpeakers().contains(speaker)) {
-            return false;
-        } else {
-            list.getSpeakers().add(speaker);
-            if(!list.getKnownSpeakers().contains(speaker)) {
-                list.getKnownSpeakers().add(speaker);
-            }
-            return true;
-        }
-    }
 }

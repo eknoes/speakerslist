@@ -44,7 +44,7 @@ function switchToSex(obj) {
             var sUID = speaker.attr("id").substr(8, speaker.attr("id").length);
             changeSpeakerSex(obj.parents(".speaker"), newSex);
             $.ajax(API_URL + "/list/" + LIST_ID + "/changeSpeaker?uid=" + encodeURIComponent(sUID) + "&gender=" + newSex).done(function(updatedList) {
-                updatedList(updatedList);
+                updateList(updatedList);
             }).fail(printError);
 
 
@@ -66,10 +66,14 @@ function createSpeakerObj(speakerObj) {
         <li><a class="btn-floating orange mixed" onclick="switchToSex(this)"></a></li> \
         </ul> \
         </div> \
-        <a class="btn-floating btn-large waves-effect waves-light red darken-4">X</a> \
+        <a class="btn-floating btn-large waves-effect waves-light red darken-4" onclick="removeSpeakerSelf(this)">X</a> \
         </div>'));
     changeSpeakerSex(newObj, speakerObj.sex);
     $("#speakers").append(newObj);
+}
+
+function removeSpeakerObj(uid) {
+    $("#speaker-" + uid).remove();
 }
 
 var API_URL = "/v0";
@@ -112,7 +116,16 @@ $(document).ready(function() {
 
 function addSpeaker() {
     $.ajax(API_URL + "/list/" + LIST_ID + "/addSpeaker?name=" + encodeURIComponent($("#new-speaker-input")[0].value)).done(function(updatedList) {
-        $("#new-speaker-input").value = "";
+        $("#new-speaker-input")[0].value = "";
+        updateList(updatedList);
+    }).fail(printError);
+}
+
+function removeSpeakerSelf(obj) {
+    var speaker = $("#speakers").find(obj).parents(".speaker");
+    var sUID = speaker.attr("id").substr(8, speaker.attr("id").length);
+    removeSpeakerObj(sUID);
+    $.ajax(API_URL + "/list/" + LIST_ID + "/removeSpeaker?uid=" + encodeURIComponent(sUID)).done(function(updatedList) {
         updateList(updatedList);
     }).fail(printError);
 }

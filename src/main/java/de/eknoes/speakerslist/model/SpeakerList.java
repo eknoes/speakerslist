@@ -29,11 +29,11 @@ public class SpeakerList {
         this.knownSpeakers = knownSpeakers;
     }
 
-    public List<Speaker> getSpeakers() {
+    public List<Speaker> getQueue() {
         return queue;
     }
 
-    public void setSpeakers(List<Speaker> speakers) {
+    public void setQueue(List<Speaker> speakers) {
         this.queue = speakers;
     }
 
@@ -59,5 +59,35 @@ public class SpeakerList {
 
     public void setPreferNewSpeaker(boolean preferNewSpeaker) {
         this.preferNewSpeaker = preferNewSpeaker;
+    }
+
+    public boolean addSpeaker(String uid) {
+        for (Speaker s : this.getKnownSpeakers()) {
+            if (s.getUid().equals(uid)) {
+                return addSpeaker(s);
+            }
+        }
+        return false;
+    }
+
+    public boolean addSpeaker(Speaker speaker) {
+        if (this.getQueue().contains(speaker)) {
+            return false;
+        } else {
+            this.getQueue().add(speaker);
+            if (!this.getKnownSpeakers().contains(speaker)) {
+                this.getKnownSpeakers().add(speaker);
+            }
+            return true;
+        }
+
+    }
+
+    public void removeSpeaker(String uid) {
+        this.getQueue().forEach((Speaker s ) -> {
+            if(s.getUid().equals(uid)) {
+                this.getQueue().remove(s);
+            }
+        });
     }
 }

@@ -7,17 +7,15 @@
     </head>
     <body>
         <main class="container row">
-            <section class="s8 m6 offset-s2 offset-m3 col">
+            <section class="s12 m6 offset-m3 col">
                 <h1>Rednerliste</h1>
-                <div id="new-speaker" class="row valign-wrapper">
-                    <div class="input-field col s10">
+                <form onsubmit="addSpeaker()" id="new-speaker" class="row valign-wrapper" action="#">
+                    <div class="input-field col s10 left">
                         <input id="new-speaker-input" type="text">
                         <label for="new-speaker-input">Neuer Redner</label>
                     </div>
-                    <div class="col s2">
-                        <a class="waves-effect waves-light btn" onclick="addSpeaker()">Hinzuf&uuml;gen</a>
-                    </div>
-                </div>
+                    <button class="btn waves-effect waves-light right s2 col" type="submit" name="action">Hinzuf&uuml;gen</button>
+                </form>
                 <div id="speakers" class="row">
                 </div>
                 <div class="row footer">
