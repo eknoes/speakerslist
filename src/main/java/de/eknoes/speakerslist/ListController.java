@@ -1,10 +1,10 @@
-import jdk.nashorn.internal.objects.annotations.Getter;
-import model.APIError;
-import model.Gender;
-import model.Speaker;
-import model.SpeakerList;
+package de.eknoes.speakerslist;
+
+import de.eknoes.speakerslist.model.APIError;
+import de.eknoes.speakerslist.model.Gender;
+import de.eknoes.speakerslist.model.Speaker;
+import de.eknoes.speakerslist.model.SpeakerList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;

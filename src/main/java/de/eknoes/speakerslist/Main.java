@@ -1,6 +1,7 @@
+package de.eknoes.speakerslist;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static spark.Spark.*;
 

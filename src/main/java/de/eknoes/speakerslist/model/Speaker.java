@@ -1,4 +1,4 @@
-package model;
+package de.eknoes.speakerslist.model;
 
 import java.util.UUID;
 

@@ -1,6 +1,7 @@
-package model;
+package de.eknoes.speakerslist.model;
 
 /**
+ * speakerslist
  * Created by soenke on 21.01.16.
  */
 public class APIError {

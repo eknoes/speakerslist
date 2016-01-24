@@ -1,4 +1,6 @@
-import model.Gender;
+package de.eknoes.speakerslist;
+
+import de.eknoes.speakerslist.model.Gender;
 
 /**
  * speakerslist

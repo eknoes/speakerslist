@@ -1,10 +1,11 @@
-package model;
+package de.eknoes.speakerslist.model;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 /**
+ * speakerslist
  * Created by soenke on 21.01.16.
  */
 public class SpeakerList {
