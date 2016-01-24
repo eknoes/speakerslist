@@ -3,15 +3,16 @@ package model;
 import java.util.UUID;
 
 /**
+ * speakerslist
  * Created by soenke on 21.01.16.
  */
 public class Speaker {
     private String uid;
     private String name;
-    private String sex;
+    private Gender sex;
     private boolean hasSpoken = false;
 
-    public Speaker(String name, String sex) {
+    public Speaker(String name, Gender sex) {
         this.uid = UUID.randomUUID().toString();
         this.name = name;
         this.sex = sex;
@@ -33,11 +34,11 @@ public class Speaker {
         this.name = name;
     }
 
-    public String getSex() {
+    public Gender getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Gender sex) {
         this.sex = sex;
     }
 

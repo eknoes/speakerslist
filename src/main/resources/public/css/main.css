@@ -1,0 +1,33 @@
+fieldset.preferences .switch {
+    margin-bottom: 10px;
+}
+
+a.btn-floating {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+a.btn-large {
+    font-size: 2rem;
+}
+
+.card-panel > a.btn-floating {
+    margin-left: 20px;
+}
+
+a.male:before {
+    content: "\2642";
+}
+
+a.female:before {
+    content: "\2640";
+}
+
+a.mixed:before {
+    content: "\26A4";
+}
+
+#toast-container {
+    top: 80%;
+    right: 50%;
+}
