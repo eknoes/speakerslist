@@ -14,7 +14,7 @@ public class SpeakerList {
     private boolean preferNewSpeaker = false;
 
     private List<Speaker> knownSpeakers = new LinkedList<>();
-    private List<Speaker> speakers = new LinkedList<>();
+    private List<Speaker> queue = new LinkedList<>();
 
     public SpeakerList() {
         this.id = UUID.randomUUID().toString();
@@ -30,11 +30,11 @@ public class SpeakerList {
     }
 
     public List<Speaker> getSpeakers() {
-        return speakers;
+        return queue;
     }
 
     public void setSpeakers(List<Speaker> speakers) {
-        this.speakers = speakers;
+        this.queue = speakers;
     }
 
     public String getId() {

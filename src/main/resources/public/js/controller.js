@@ -43,7 +43,7 @@ function switchToSex(obj) {
             var speaker = obj.parents(".speaker");
             var sUID = speaker.attr("id").substr(8, speaker.attr("id").length);
             changeSpeakerSex(obj.parents(".speaker"), newSex);
-            $.ajax(API_URL + "/lists/" + LIST_ID + "/changeSpeaker?uid=" + encodeURIComponent(sUID) + "&gender=" + newSex).done(function(updatedList) {
+            $.ajax(API_URL + "/list/" + LIST_ID + "/changeSpeaker?uid=" + encodeURIComponent(sUID) + "&gender=" + newSex).done(function(updatedList) {
                 updatedList(updatedList);
             }).fail(printError);
 
@@ -78,15 +78,15 @@ var API_URL = "/v0";
  * Initializes the list
  */
 function initializeList() {
-    $.ajax(API_URL + "/getList/" + LIST_ID).done(function(listObj) {
-        listObj.speakers.forEach(function(speakerObj) {
+    $.ajax(API_URL + "/list/" + LIST_ID).done(function(listObj) {
+        listObj.queue.forEach(function(speakerObj) {
             createSpeakerObj(speakerObj);
         });
     }).fail(printError);
 }
 
 function updateList(listObj) {
-    var speakers = listObj.speakers;
+    var speakers = listObj.queue;
     speakers.forEach(function(speaker) {
         var spk = $("#speaker-" + speaker.uid);
         if(spk.length == 0) {
@@ -111,7 +111,7 @@ $(document).ready(function() {
  */
 
 function addSpeaker() {
-    $.ajax(API_URL + "/lists/" + LIST_ID + "/addSpeaker?name=" + encodeURIComponent($("#new-speaker-input")[0].value)).done(function(updatedList) {
+    $.ajax(API_URL + "/list/" + LIST_ID + "/addSpeaker?name=" + encodeURIComponent($("#new-speaker-input")[0].value)).done(function(updatedList) {
         $("#new-speaker-input").value = "";
         updateList(updatedList);
     }).fail(printError);

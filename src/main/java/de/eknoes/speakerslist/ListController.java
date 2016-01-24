@@ -27,7 +27,7 @@ public class ListController {
         /**
          * Returns an SpeakerList Object with the given ID
          */
-        get(PREFIX + "/getList/:id", (request, response) -> {
+        get(PREFIX + "/list/:id", (request, response) -> {
             response.type("application/json");
             String id = request.params(":id");
             if(id != null) {
@@ -51,7 +51,7 @@ public class ListController {
         }, JsonUtil.json());
 
         /* Adding new Speaker */
-        get(PREFIX + "/lists/:id/addSpeaker", (request, response) -> {
+        get(PREFIX + "/list/:id/addSpeaker", (request, response) -> {
             response.type("application/json");
             String id = request.params(":id");
             if(id != null) {
@@ -99,7 +99,7 @@ public class ListController {
         }, JsonUtil.json());
 
         /* Changing Speaker */
-        get(PREFIX + "/lists/:id/changeSpeaker", (request, response) -> {
+        get(PREFIX + "/list/:id/changeSpeaker", (request, response) -> {
             response.type("application/json");
             String id = request.params(":id");
             if(id != null) {
