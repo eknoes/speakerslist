@@ -16,7 +16,9 @@ public class Main {
     public static FreeMarkerEngine engine = new FreeMarkerEngine();
 
     public static void main(String[] args) {
-        port(Integer.valueOf(System.getenv("PORT")));
+        if(System.getenv("PORT") != null) {
+            port(Integer.valueOf(System.getenv("PORT")));
+        }
         staticFileLocation("/public");
 
         cfg.setClassForTemplateLoading(ListController.class, "/templates");

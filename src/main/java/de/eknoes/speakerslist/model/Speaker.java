@@ -6,11 +6,12 @@ import java.util.UUID;
  * speakerslist
  * Created by soenke on 21.01.16.
  */
-public class Speaker {
+public class Speaker implements Comparable {
     private String uid;
     private String name;
     private Gender sex;
     private boolean hasSpoken = false;
+    private long lastAdded = Long.MIN_VALUE;
 
     public Speaker(String name, Gender sex) {
         this.uid = UUID.randomUUID().toString();
@@ -48,5 +49,28 @@ public class Speaker {
 
     public void setHasSpoken(boolean hasSpoken) {
         this.hasSpoken = hasSpoken;
+    }
+
+    public long getLastAdded() {
+        return lastAdded;
+    }
+
+    public void setLastAdded(long lastAdded) {
+        this.lastAdded = lastAdded;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
+
+    public int compareTo(Speaker s) {
+        if(this.getLastAdded() - s.getLastAdded() > 0) {
+            return -1;
+        } else if(this.getLastAdded() - s.getLastAdded() < 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

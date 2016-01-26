@@ -22,7 +22,20 @@ public class ListController {
     public ListController() {
 
 
-        /* Getting and Creating Lists */
+        /***************
+         * List Config *
+         ***************/
+
+        /**
+         * Creates a new List
+         */
+        get(PREFIX + "/newList", (request, response) -> {
+            response.type("application/json");
+            SpeakerList newList = new SpeakerList();
+            lists.put(newList.getId(), newList);
+            return newList;
+        }, JsonUtil.json());
+
 
         /**
          * Returns an SpeakerList Object with the given ID
@@ -43,12 +56,59 @@ public class ListController {
             return new APIError(400, "No list id given");
         }, JsonUtil.json());
 
-        get(PREFIX + "/newList", (request, response) -> {
+        /**
+         * Changes the specified settings of list
+         */
+        get(PREFIX + "/list/:id/changeList", (request, response) -> {
             response.type("application/json");
-            SpeakerList newList = new SpeakerList();
-            lists.put(newList.getId(), newList);
-            return newList;
+            String id = request.params(":id");
+            if(id != null) {
+                if(lists.get(id) != null) {
+                    boolean answered = false;
+                    SpeakerList s = lists.get(id);
+                    if(request.queryParams("sexBalanced") != null) {
+                        s.setSexBalanced(Boolean.valueOf(request.queryParams("sexBalanced")));
+                        answered = true;
+                    }
+                    if(request.queryParams("preferNewSpeaker") != null) {
+                        s.setPreferNewSpeaker(Boolean.valueOf(request.queryParams("preferNewSpeaker")));
+                        answered = true;
+                    }
+                    if(!answered) {
+                        response.status(400);
+                        return new APIError(400, "No Setting given.");
+                    } else {
+                        return s;
+                    }
+                } else {
+                    response.status(404);
+                    return new APIError(404, "No list with id " + id);
+                }
+            }
+            response.status(400);
+            return new APIError(400, "No list id given");
         }, JsonUtil.json());
+
+        get(PREFIX + "/list/:id/clear", (request, response) -> {
+            response.type("application/json");
+            String id = request.params(":id");
+            if(id != null) {
+                if(lists.get(id) != null) {
+                    lists.get(id).clear();
+                    return lists.get(id);
+                } else {
+                    response.status(404);
+                    return new APIError(404, "No list with id " + id);
+                }
+            }
+            response.status(400);
+            return new APIError(400, "No list id given");
+        }, JsonUtil.json());
+
+
+        /*********************
+         * SPEAKER FUNCTIONS *
+         *********************/
 
         /* Adding new Speaker */
         get(PREFIX + "/list/:id/addSpeaker", (request, response) -> {

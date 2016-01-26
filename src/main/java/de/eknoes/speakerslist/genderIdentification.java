@@ -21,7 +21,17 @@ public class genderIdentification {
     }
 
     public Gender getGender(String name) {
-        return Gender.male;
+        switch (name) {
+            case "Tom":
+                return Gender.male;
+            case "Gesine":
+                return Gender.female;
+            case "Erik":
+                return Gender.male;
+            case "Julius":
+                return Gender.male;
+        }
+        return Gender.mixed;
     }
 }
 

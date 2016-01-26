@@ -9,7 +9,7 @@
         <main class="container row">
             <section class="s12 m6 offset-m3 col">
                 <h1>Rednerliste</h1>
-                <form onsubmit="addSpeaker()" id="new-speaker" class="row valign-wrapper" action="#">
+                <form onsubmit="return addSpeaker()" id="new-speaker" class="row valign-wrapper" action="#" method="post">
                     <div class="input-field col s10 left">
                         <input id="new-speaker-input" type="text">
                         <label for="new-speaker-input">Neuer Redner</label>
@@ -22,12 +22,12 @@
                     <fieldset class="s12 col preferences">
                         <legend>Einstellungen</legend>
                         <div class="switch s6 col left-align">
-                            <label><input id="sexBalanced" type="checkbox">Geschlechterausgeglichenheit
+                            <label><input id="sexBalanced" type="checkbox" onclick="changeSB()">Geschlechterausgeglichenheit
                                 <span class="lever"></span>
                             </label>
                         </div>
                         <div class="switch s6 col right-align">
-                            <label><input id="preferNewSpeaker" type="checkbox">Erstrederecht
+                            <label><input id="preferNewSpeaker" type="checkbox" onclick="changePNS()">Erstrederecht
                                 <span class="lever"></span>
                             </label>
                         </div>
@@ -39,6 +39,7 @@
                 <#else>
                     <p>Diese Redeliste ist über den folgenden Link zu erreichen:<br /> <a href="#" id="list-link"></a></p>
                 </#if>
+                    <a onclick="clearList()" href="#">Rednerliste leeren</a>
                 </div>
             </section>
         </main>

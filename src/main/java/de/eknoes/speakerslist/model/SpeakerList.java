@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+
 /**
  * speakerslist
  * Created by soenke on 21.01.16.
@@ -14,7 +15,7 @@ public class SpeakerList {
     private boolean preferNewSpeaker = false;
 
     private List<Speaker> knownSpeakers = new LinkedList<>();
-    private List<Speaker> queue = new LinkedList<>();
+    private SpeakerQueue queue = new SpeakerQueue();
 
     public SpeakerList() {
         this.id = UUID.randomUUID().toString();
@@ -33,7 +34,7 @@ public class SpeakerList {
         return queue;
     }
 
-    public void setQueue(List<Speaker> speakers) {
+    public void setQueue(SpeakerQueue speakers) {
         this.queue = speakers;
     }
 
@@ -51,6 +52,8 @@ public class SpeakerList {
 
     public void setSexBalanced(boolean sexBalanced) {
         this.sexBalanced = sexBalanced;
+        queue.setBalanceGender(sexBalanced);
+
     }
 
     public boolean isPreferNewSpeaker() {
@@ -59,6 +62,7 @@ public class SpeakerList {
 
     public void setPreferNewSpeaker(boolean preferNewSpeaker) {
         this.preferNewSpeaker = preferNewSpeaker;
+        queue.setPreferFirstWord(preferNewSpeaker);
     }
 
     public boolean addSpeaker(String uid) {
@@ -84,10 +88,25 @@ public class SpeakerList {
     }
 
     public void removeSpeaker(String uid) {
-        this.getQueue().forEach((Speaker s ) -> {
+        Speaker remove = null;
+        for(Speaker s : this.getQueue()) {
             if(s.getUid().equals(uid)) {
-                this.getQueue().remove(s);
+                remove = s;
+                break;
             }
-        });
+        }
+        if(remove == null) {
+            return;
+        }
+        this.getQueue().remove(remove);
+    }
+
+    public void clear() {
+        for(Speaker s : knownSpeakers) {
+            s.setHasSpoken(false);
+        }
+        for(Speaker s : queue) {
+            queue.remove(s);
+        }
     }
 }

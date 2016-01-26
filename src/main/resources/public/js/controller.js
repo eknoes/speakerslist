@@ -41,7 +41,7 @@ function switchToSex(obj) {
     obj.attr("class").split(" ").forEach(function(newSex) {
         if(newSex == "male" || newSex == "female" || newSex == "mixed") {
             var speaker = obj.parents(".speaker");
-            var sUID = speaker.attr("id").substr(8, speaker.attr("id").length);
+            var sUID = getUidFromID(speaker.attr("id"));
             changeSpeakerSex(obj.parents(".speaker"), newSex);
             $.ajax(API_URL + "/list/" + LIST_ID + "/changeSpeaker?uid=" + encodeURIComponent(sUID) + "&gender=" + newSex).done(function(updatedList) {
                 updateList(updatedList);
@@ -55,8 +55,10 @@ function switchToSex(obj) {
 /**
  * Creates a new Speaker DOM Element from JSON Object
  * @param speakerObj Speaker JSON Object
+ * @param noAppend Boolean, if object should be appended or returned
  */
-function createSpeakerObj(speakerObj) {
+function createSpeakerObj(speakerObj, noAppend) {
+    noAppend = !!noAppend;
     var newObj = $($.parseHTML('<div id="speaker-' + speakerObj.uid + '" class="card-panel light-blue row valign-wrapper dismissable speaker"> \
         <span class="white-text s10 col">' + speakerObj.name + '</span> \
         <div class="fixed-action-btn horizontal" style="bottom: 0; right: 5px; margin: 0; padding: 0; position: relative"> \
@@ -69,11 +71,11 @@ function createSpeakerObj(speakerObj) {
         <a class="btn-floating btn-large waves-effect waves-light red darken-4" onclick="removeSpeakerSelf(this)">X</a> \
         </div>'));
     changeSpeakerSex(newObj, speakerObj.sex);
-    $("#speakers").append(newObj);
-}
 
-function removeSpeakerObj(uid) {
-    $("#speaker-" + uid).remove();
+    if(noAppend) {
+        return newObj;
+    }
+    $("#speakers").append(newObj);
 }
 
 var API_URL = "/v0";
@@ -83,20 +85,29 @@ var API_URL = "/v0";
  */
 function initializeList() {
     $.ajax(API_URL + "/list/" + LIST_ID).done(function(listObj) {
-        listObj.queue.forEach(function(speakerObj) {
-            createSpeakerObj(speakerObj);
-        });
+        updateList(listObj);
     }).fail(printError);
 }
 
 function updateList(listObj) {
+    console.log("update");
     var speakers = listObj.queue;
-    speakers.forEach(function(speaker) {
-        var spk = $("#speaker-" + speaker.uid);
-        if(spk.length == 0) {
-            createSpeakerObj(speaker);
+    var speakersList = $("#speakers");
+    for(var i = 1; i <= speakers.length; i++) {
+        if(speakersList.find(".speaker:nth-child(" + i + ")").length > 0) {
+            if(getUidFromID(speakersList.find(".speaker:nth-child(" + i + ")")[0].id) != speakers[i-1].uid) {
+                $("#speakers").find(".speaker:nth-child(" + i + ")").replaceWith(createSpeakerObj(speakers[i - 1], true));
+            }
+        } else {
+            createSpeakerObj(speakers[i-1], false);
         }
-    });
+    }
+    while(speakersList.find(".speaker:nth-child(" + (speakers.length + 1) + ")").length > 0) {
+        $("#speakers").find(".speaker:nth-child(" + (speakers.length + 1) + ")").remove();
+    }
+
+    $("#sexBalanced")[0].checked = listObj.sexBalanced;
+    $("#preferNewSpeaker")[0].checked = listObj.preferNewSpeaker;
 }
 
 $(document).ready(function() {
@@ -119,17 +130,39 @@ $(document).ready(function() {
 
 function addSpeaker() {
     $.ajax(API_URL + "/list/" + LIST_ID + "/addSpeaker?name=" + encodeURIComponent($("#new-speaker-input")[0].value)).done(function(updatedList) {
-        $("#new-speaker-input")[0].value = "";
         updateList(updatedList);
     }).fail(printError);
+    $("#new-speaker-input")[0].value = "";
     return false;
 }
 
 function removeSpeakerSelf(obj) {
     var speaker = $("#speakers").find(obj).parents(".speaker");
-    var sUID = speaker.attr("id").substr(8, speaker.attr("id").length);
-    removeSpeakerObj(sUID);
+    var sUID = getUidFromID(speaker.attr("id"));
     $.ajax(API_URL + "/list/" + LIST_ID + "/removeSpeaker?uid=" + encodeURIComponent(sUID)).done(function(updatedList) {
         updateList(updatedList);
     }).fail(printError);
+}
+
+function changePNS() {
+    $.ajax(API_URL + "/list/" + LIST_ID + "/changeList?preferNewSpeaker=" + encodeURIComponent($("#preferNewSpeaker")[0].checked)).done(function(updatedList) {
+        updateList(updatedList);
+    }).fail(printError);
+}
+
+function changeSB() {
+    $.ajax(API_URL + "/list/" + LIST_ID + "/changeList?sexBalanced=" + encodeURIComponent($("#sexBalanced")[0].checked)).done(function(updatedList) {
+        updateList(updatedList);
+    }).fail(printError);
+}
+
+function clearList() {
+    $.ajax(API_URL + "/list/" + LIST_ID + "/clear").done(function(updatedList) {
+        updateList(updatedList);
+    }).fail(printError);
+}
+
+/* Helper Function */
+function getUidFromID(cssID) {
+    return cssID.substr(8, cssID.length);
 }
